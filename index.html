@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <Link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>HerWellness!</h1>
+        <p>smart Web Platform for women's Fitness</p>
+    </header>
+
+    <main class="grid">
+
+        <!-- Priod Cycle Tracker-->
+        <div class="card">
+            <h1>🩸period Cycle Tracker</h1>
+            <input type="date" id="lastPeriod">
+            <input type="number" id="cyclelength" placeholder="cycle length (28)">
+            <button onclick="CalculateNextperiod()">Predict</button>
+            <p id="periodResult"></p>
+        </div>
+
+        <!--Mood Tracker-->
+        <div>
+            <h2>😊Mood Tacker</h2>
+            <select id="moodSelect">
+                <option>Happy</option>
+                <option>calm</option>
+                <option>Stressed</option>
+                <option>irritated</option>
+                <option>Sad</option>
+                <option>Angry</option>
+            </select>
+            <button onclick="saveMood()">save</button>
+            <p id="moodResult"></p>
+        </div> 
+
+        <!-- Water Tracker -->
+        <div class="card">
+            <h2>💧 Water Intake</h2>
+            <input type="number" id="waterInput" placeholder="Glasses">
+            <button onclick="trackWater()">Update</button>
+            <p id="waterResult"></p>
+        </div>
+
+        <!-- Fitness -->
+        <div class="card">
+            <h2>🏃‍♀️ Fitness</h2>
+            <input type="number" id="steps" placeholder="Steps">
+            <input type="number" id="exercise" placeholder="Exercise (min)">
+            <button onclick="trackFitness()">Save</button>
+            <p id="fitnessResult"></p>
+        </div>
+        
+
+        <!-- AI Chatbot -->
+  <div class="card">
+    <h2>🤖 AI Chatbot</h2>
+    <div id="chatBox" class="chatbox"></div>
+    <input type="text" id="userMsg" placeholder="Ask about PCOS, periods...">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+
+  
+
+
+    </main>
+
+<footer>
+    Made with ❤️ for Women
+</footer>
+
+
+<script src="logic.js"></script>
+
+
+</body>
+
+</html>
