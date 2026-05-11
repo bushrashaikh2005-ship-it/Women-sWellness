@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HerWellness | Cycle Insight</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@300;400&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --lavender: #8e7ab5;
+            --soft-lavender: #f3edf9;
+            --cream: #f7f2f9;
+            --period-red: 220, 53, 69;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--cream);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 3rem;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(142, 122, 181, 0.15);
+            max-width: 650px;
+            width: 90%;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.4rem;
+            color: var(--lavender);
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 2rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            font-size: 0.85rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 8px 16px;
+            border-radius: 25px;
+            border: 1.5px solid var(--lavender);
+            background: white;
+            color: var(--lavender);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: var(--lavender);
+            color: white;
+        }
+
+        .result-bar {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--lavender);
+            font-weight: 500;
+        }
+
+        .phase-display {
+            background: var(--soft-lavender);
+            padding: 2rem;
+            border-radius: 18px;
+            margin-top: 2rem;
+        }
+
+        #phase-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--lavender);
+        }
+
+        .details {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Calendar Styling */
+
+        .calendar {
+            margin-top: 2rem;
+            border-radius: 20px;
+            padding: 1.5rem;
+            background: #faf7ff;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .calendar-header h3 {
+            margin: 0;
+            font-size: 1rem;
+            color: var(--lavender);
+        }
+
+        .weekday-row {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            margin-top: 1rem;
+            font-size: 0.75rem;
+            text-align: center;
+            opacity: 0.6;
+            font-weight: 500;
+        }
+
+        .calendar-grid {
+            margin-top: 0.5rem;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .calendar-grid div {
+            padding: 10px 0;
+            border-radius: 10px;
+            text-align: center;
+            transition: 0.2s ease;
+            font-size: 0.85rem;
+        }
+
+        .calendar-grid div:hover {
+            background: var(--soft-lavender);
+            cursor: pointer;
+        }
+
+        .today {
+            background: var(--lavender);
+            color: white;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>HerWellness</h1>
+        <p class="subtitle">A Gentle Space for Your Cycle</p>
+
+        <div class="input-group">
+            <label>Last Period Start Date</label>
+            <input type="date" id="last-period">
+        </div>
+
+        <div class="input-group">
+            <label>Average Cycle Length (days)</label>
+            <input type="number" id="cycle-length" value="28">
+        </div>
+
+        <div class="input-group">
+            <label>Period Duration (days)</label>
+            <input type="number" id="period-length" value="5">
+        </div>
+
+        <button onclick="calculateCycle()">Track My Cycle</button>
+
+        <div class="result-bar" id="next-period"></div>
+
+        <div class="phase-display">
+            <div id="cycle-day"></div>
+            <div id="phase-name"></div>
+            <div class="details" id="phase-details"></div>
+        </div>
+
+        <div class="calendar">
+            <div class="calendar-header">
+                <button onclick="changeMonth(-1)">‹</button>
+                <h3 id="month-year"></h3>
+                <button onclick="changeMonth(1)">›</button>
+            </div>
+
+            <div class="weekday-row">
+                <div>Sun</div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+            </div>
+
+            <div class="calendar-grid" id="calendar"></div>
+        </div>
+
+    </div>
+
+    <script>
+
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+        let storedLastPeriod = null;
+        let storedPeriodLength = 0;
+
+        function calculateCycle() {
+
+            const lastPeriodDate = new Date(document.getElementById("last-period").value);
+            const cycleLength = parseInt(document.getElementById("cycle-length").value);
+            const periodLength = parseInt(document.getElementById("period-length").value);
+
+            storedLastPeriod = lastPeriodDate;
+            storedPeriodLength = periodLength;
+
+            const today = new Date();
+            const diffDays = Math.floor((today - lastPeriodDate) / (1000 * 60 * 60 * 24));
+            const cycleDay = (diffDays % cycleLength) + 1;
+
+            const nextPeriod = new Date(lastPeriodDate);
+            nextPeriod.setDate(lastPeriodDate.getDate() + cycleLength);
+
+            document.getElementById("next-period").innerText =
+                "Next Period Expected: " + nextPeriod.toDateString();
+
+            document.getElementById("cycle-day").innerText =
+                "Today is Cycle Day " + cycleDay;
+
+            generateCalendar();
+        }
+
+        function generateCalendar() {
+
+            const calendar = document.getElementById("calendar");
+            calendar.innerHTML = "";
+
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"];
+
+            document.getElementById("month-year").innerText =
+                monthNames[currentMonth] + " " + currentYear;
+
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+            for (let i = 0; i < firstDay; i++) {
+                calendar.innerHTML += "<div></div>";
+            }
+
+            for (let d = 1; d <= daysInMonth; d++) {
+
+                const dayDiv = document.createElement("div");
+                dayDiv.innerText = d;
+
+                const thisDate = new Date(currentYear, currentMonth, d);
+                const today = new Date();
+
+                if (
+                    d === today.getDate() &&
+                    currentMonth === today.getMonth() &&
+                    currentYear === today.getFullYear()
+                ) {
+                    dayDiv.classList.add("today");
+                }
+
+                if (storedLastPeriod) {
+                    const diff = Math.floor((thisDate - storedLastPeriod) / (1000 * 60 * 60 * 24));
+                    if (diff >= 0 && diff < storedPeriodLength) {
+                        const opacity = 1 - (diff / storedPeriodLength);
+                        dayDiv.style.background = `rgba(${getComputedStyle(document.documentElement)
+                            .getPropertyValue('--period-red')}, ${opacity})`;
+                        dayDiv.style.color = "white";
+                    }
+                }
+
+                calendar.appendChild(dayDiv);
+            }
+        }
+
+        function changeMonth(direction) {
+
+            currentMonth += direction;
+
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+
+            generateCalendar();
+        }
+
+        generateCalendar();
+
+    </script>
+
+</body>
+
+</html>

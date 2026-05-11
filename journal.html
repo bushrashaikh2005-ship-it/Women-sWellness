@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Emotional & Cycle Journal | HerWellness</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+   
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #faf7fc;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, #cdb4db, #ffc8dd);
+            padding: 80px 20px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 15px;
+            opacity: 0.95;
+        }
+
+        .primary-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 24px;
+            background: #fff;
+            color: #8b5fbf;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Sections */
+        .section {
+            max-width: 850px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .section h2 {
+            color: #8b5fbf;
+            margin-bottom: 10px;
+        }
+
+        /* Journal Card */
+        .journal-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .journal-card label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+
+        .journal-card input,
+        .journal-card select,
+        .journal-card textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .journal-card textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .journal-card button {
+            margin-top: 20px;
+            padding: 12px 22px;
+            background: #8b5fbf;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .journal-card button:hover {
+            background: #7a4fb0;
+        }
+
+        .note {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #666;
+            text-align: center;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 13px;
+            color: #777;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 28px;
+            }
+        }
+
+        .page-content {
+            padding-top: 80px;
+        }
+    </style>
+
+
+
+
+</head>
+
+<body>
+
+
+    <!-- Hero -->
+    <header class="hero">
+        <h1>Emotional & Cycle Journal 🌙</h1>
+        <p>A gentle space to listen to yourself</p>
+        <a href="index.html" class="primary-btn">← Back to Home</a>
+    </header>
+
+    <!-- Intro -->
+    <section class="section">
+        <h2>How are you feeling today?</h2>
+        <p>
+            There is no right or wrong here.
+            This journal exists to help you notice patterns — not judge yourself.
+        </p>
+    </section>
+
+    <!-- Journal Card -->
+    <section class="section">
+        <div class="journal-card">
+
+            <label>Date</label>
+            <input type="date">
+
+            <label>Energy Level</label>
+            <select>
+                <option>Very Low</option>
+                <option>Low</option>
+                <option>Okay</option>
+                <option>Good</option>
+                <option>High</option>
+            </select>
+
+            <label>Current Mood</label>
+            <select>
+                <option>Calm</option>
+                <option>Anxious</option>
+                <option>Sad</option>
+                <option>Irritated</option>
+                <option>Happy</option>
+                <option>Overwhelmed</option>
+            </select>
+
+            <label>Cycle Phase (optional)</label>
+            <select>
+                <option>Not sure</option>
+                <option>Menstrual</option>
+                <option>Follicular</option>
+                <option>Ovulation</option>
+                <option>Luteal</option>
+            </select>
+
+            <label>What’s on your mind?</label>
+            <textarea id="journalText" placeholder="Write freely. This space is just for you..."></textarea>
+
+
+            <button>Save Reflection</button>
+
+            <p class="note">
+                🌷 Even noticing is progress. Thank yourself for showing up.
+            </p>
+
+        </div>
+
+
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>HerWellness © 2026 | Your feelings are valid 🌸</p>
+    </footer>
+
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const promptType = params.get("prompt");
+
+        const journalText = document.getElementById("journalText");
+
+        if (promptType === "stress") {
+            journalText.value =
+                "What has been stressing me lately?\nWhere do I feel tension in my body?\nWhat might help me feel a little safer today?";
+        }
+
+        if (promptType === "rest") {
+            journalText.value =
+                "How has my sleep been recently?\nWhere am I pushing myself too hard?\nWhat kind of rest do I need right now?";
+        }
+    </script>
++
+</body>
+
+</html>

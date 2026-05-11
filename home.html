@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>HerWellness | A Gentle Wellness Space</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="HerWellness supports women with PCOS/PCOD through emotional awareness and gentle self-care.">
+
+  <link rel="stylesheet" href="css.css">
+
+</head>
+
+<body>
+  <header class="navbar">
+    <div class="logo">HerWellness</div>
+    <nav class="nav-links" id="navLinks">
+      <a href="home.html">Home</a>
+      <a href="journal.html">Journal</a>
+      <a href="pcos.html">PCOS</a>
+      <a href="selfcare.html">Self-Care</a>
+      <a href="period.html">Period Tracker</a>
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact Us</a>
+       <button class="logout-btn" onclick="logout()">Logout</button>
+
+    </nav>
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+  </header>
+
+
+  <!-- FEATURES -->
+  <span id="welcomeUser"></span>
+  <section class="features">
+    <h2>What HerWellness Supports</h2>
+
+    <div class="carousel">
+      <div class="carousel-track">
+
+        <div class="card">
+          <h3>🌸 PCOS Awareness</h3>
+          <p>Understand PCOS, symptoms, emotional changes, and hormonal health.</p>
+        </div>
+
+        <div class="card">
+          <h3>🌙 Emotional & Cycle Journal</h3>
+          <p>Track moods and energy gently, without pressure or judgment.</p>
+        </div>
+
+        <div class="card">
+          <h3>🤍 Gentle Self-Care</h3>
+          <p>Care to make your body feel loved and understood.</p>
+        </div>
+        <div class="card">
+          <h3>🩸 Period Tracker</h3>
+          <p>Track your cycle, next period date, and hormonal phases gently.</p>
+          <a href="period.html" class="card-btn">Track Now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- MOOD CHECK -->
+  <section class="mood-section">
+    <h2>How are you feeling today?</h2>
+
+    <div class="moods">
+      <button class="mood-btn" data-mood="calm">😌 Calm</button>
+      <button class="mood-btn" data-mood="tired">😴 Tired</button>
+      <button class="mood-btn" data-mood="anxious">😟 Anxious</button>
+      <button class="mood-btn" data-mood="low">💔 Low</button>
+      <button class="mood-btn" data-mood="okay">😊 Okay</button>
+    </div>
+    <p id="moodMessage" class="mood-message"></p>
+  </section>
+
+
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>Built with 🌷 by Bushra | HerWellness © 2026</p>
+  </footer>
+
+  <script src="index4.js">
+  
+    const user = JSON.parse(localStorage.getItem("herwellnessUser"));
+
+    if (user && user.isLoggedIn) {
+        document.getElementById("welcomeUser").innerText =
+            "Welcome back, " + user.first + " 🌸";
+    } else {
+        window.location.href = "register.html";
+    }
+
+  </script>
+
+</body>
+
+</html>

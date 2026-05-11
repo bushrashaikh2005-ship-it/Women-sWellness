@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #f8cdda, #1d2b64);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        form {
+            background: #fff;
+            width: 100%;
+            max-width: 420px;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        form p {
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            outline: none;
+            margin-bottom: 16px;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #1d2b64;
+            box-shadow: 0 0 0 2px rgba(29, 43, 100, 0.1);
+        }
+
+        select {
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        .checkbox-group {
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .checkbox-group input {
+            width: auto;
+            margin-right: 8px;
+        }
+
+        .success-message {
+            background: #e6f4ea;
+            color: #1d2b64;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 10px;
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #1d2b64;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            background: #16204a;
+            transform: translateY(-2px);
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <form id="registerForm">
+        <!--NAME-->
+        <label for="first">First Name</label>
+        <input type="text" id="first" name="first" required />
+
+        <label for="last"> Last Name </label>
+        <input type="text" id="last" name="last" required />
+
+        <!--email-->
+        <label for="email">Email </label>
+        <input type="email" id="email" name="email" required />
+
+        <!--Password-->
+        <label for="password">Password </label>
+        <input type="password" id="password" name="password" required />
+
+        <!--Retype Password-->
+        <label for="repassword">Re-type Password</label>
+        <input type="password" id="repassword" name="repassword" required />
+
+
+        <!--Age-->
+        <label for="age"> Age </label>
+        <input type="number" id="age" required>
+
+        <!--Wellness Goals-->
+        <label>wellness Goals</label>
+        <select id="goal" required>
+            <option value="">Select Your Goal</option>
+            <option>Hormonal Balance</option>
+            <option>PCOS Care</option>
+            <option>Weigth Managment</option>
+            <option>Mental Wellness</option>
+            <option>General Fitness</option>
+            <option>Period Tracking</option>
+
+        </select>
+
+        <!--Term Checkbox-->
+        <div class="checkbox-group">
+            <label>
+                <input type="checkbox" id="terms">
+                I agree to Terms and Conditions
+            </label>
+
+            <label>
+                <input type="checkbox" id="medical">
+                I understand this is not medical advice
+            </label>
+        </div>
+        <div id="successMessage" class="success-message">
+            🌸 Registration Successful! Welcome to HerWellness.
+        </div>
+        <!--button-->
+        <button type="submit">Register</button>
+    </form>
+
+
+    <script>
+        const form = document.getElementById("registerForm");
+const successMessage = document.getElementById("successMessage");
+
+// 🔐 Auto-login check
+window.onload = function () {
+    const savedUser = JSON.parse(localStorage.getItem("herwellnessUser"));
+
+    if (savedUser && savedUser.isLoggedIn) {
+        window.location.href = "home.html";
+        return;
+    }
+
+    // Prefill form if partially saved
+    if (savedUser) {
+        document.getElementById("first").value = savedUser.first || "";
+        document.getElementById("last").value = savedUser.last || "";
+        document.getElementById("email").value = savedUser.email || "";
+        document.getElementById("age").value = savedUser.age || "";
+        document.getElementById("goal").value = savedUser.goal || "";
+    }
+};
+
+// 💾 Save form data live
+form.addEventListener("input", function () {
+    const userData = JSON.parse(localStorage.getItem("herwellnessUser")) || {};
+
+    userData.first = document.getElementById("first").value;
+    userData.last = document.getElementById("last").value;
+    userData.email = document.getElementById("email").value;
+    userData.age = document.getElementById("age").value;
+    userData.goal = document.getElementById("goal").value;
+
+    localStorage.setItem("herwellnessUser", JSON.stringify(userData));
+});
+
+form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const password = document.getElementById("password").value;
+    const repassword = document.getElementById("repassword").value;
+    const terms = document.getElementById("terms").checked;
+    const medical = document.getElementById("medical").checked;
+
+    if (password !== repassword) {
+        alert("Passwords do not match!");
+        return;
+    }
+
+    if (password.length < 8) {
+        alert("Password must be at least 8 characters long.");
+        return;
+    }
+
+    if (!terms || !medical) {
+        alert("Please accept all terms before registering.");
+        return;
+    }
+
+    // Save final user data + login status
+    const finalUserData = {
+        first: document.getElementById("first").value,
+        last: document.getElementById("last").value,
+        email: document.getElementById("email").value,
+        age: document.getElementById("age").value,
+        goal: document.getElementById("goal").value,
+        isLoggedIn: true
+    };
+
+    localStorage.setItem("herwellnessUser", JSON.stringify(finalUserData));
+
+    // Show soft success message
+    successMessage.style.display = "block";
+
+    // Redirect
+    setTimeout(() => {
+        window.location.href = "home.html";
+    }, 1500);
+});
+    </script>
+</body>
+
+</html>
